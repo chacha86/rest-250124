@@ -38,8 +38,7 @@ public class ApiV1PostController {
 
         return postDto;
     }
-
-
+    
     @DeleteMapping("/{id}")
     public RsData delete(@PathVariable long id) {
         Post post = postService.getItem(id).get();
