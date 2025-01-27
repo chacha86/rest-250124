@@ -43,7 +43,7 @@ public class ApiV1PostController {
 
         Post post = postService.getItem(id).get();
 
-        return new RsData<> (
+        return new RsData<>(
                 "200-1",
                 "글 조회가 완료되었습니다.",
                 new PostDto(post)
@@ -82,18 +82,20 @@ public class ApiV1PostController {
     record WriteReqBody(@NotBlank @Length(min = 3) String title, @NotBlank @Length(min = 3) String content) {
     }
 
-    @PostMapping
-    public RsData<Map<String, Object>> write(@RequestBody @Valid WriteReqBody body) {
-        Post post = postService.write(body.title(), body.content());
+    record WriteResBody(long id, long totalCount) {
+    }
 
-        Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("id", post.getId());
-        dataMap.put("totalCount", 30);
+    @PostMapping
+    public RsData<WriteResBody> write(@RequestBody @Valid WriteReqBody body) {
+        Post post = postService.write(body.title(), body.content());
 
         return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                dataMap
+                new WriteResBody(
+                        post.getId(),
+                        postService.count()
+                )
         );
     }
 
