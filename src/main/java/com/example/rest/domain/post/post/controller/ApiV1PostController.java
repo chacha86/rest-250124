@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -24,6 +22,13 @@ public class ApiV1PostController {
         return postService.getItems();
     }
 
+
+    @GetMapping("{id}")
+    public Post getItem(@PathVariable long id) {
+        return postService.getItem(id).get();
+    }
+
+
     @DeleteMapping("/{id}")
     public RsData delete(@PathVariable long id) {
         Post post = postService.getItem(id).get();
@@ -34,6 +39,7 @@ public class ApiV1PostController {
                 "%d번 글 삭제가 완료되었습니다.".formatted(id)
         );
     }
+
 
     @AllArgsConstructor
     @Getter
@@ -51,6 +57,23 @@ public class ApiV1PostController {
         return new RsData(
                 "200-1",
                 "%d번 글 수정이 완료되었습니다.".formatted(id)
+        );
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class WriteForm {
+        private String title;
+        private String content;
+    }
+
+    @PostMapping
+    public RsData write(@RequestBody WriteForm form) {
+        postService.write(form.getTitle(), form.getContent());
+
+        return new RsData(
+                "200-1",
+                "글 작성이 완료되었습니다."
         );
     }
 
