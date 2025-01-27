@@ -11,7 +11,9 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -81,13 +83,17 @@ public class ApiV1PostController {
     }
 
     @PostMapping
-    public RsData write(@RequestBody @Valid WriteReqBody body) {
+    public RsData<Map<String, Object>> write(@RequestBody @Valid WriteReqBody body) {
         Post post = postService.write(body.title(), body.content());
 
-        return new RsData<Long>(
+        Map<String, Object> dataMap = new HashMap<>();
+        dataMap.put("id", post.getId());
+        dataMap.put("totalCount", 30);
+
+        return new RsData<>(
                 "200-1",
                 "글 작성이 완료되었습니다.",
-                post.getId()
+                dataMap
         );
     }
 
