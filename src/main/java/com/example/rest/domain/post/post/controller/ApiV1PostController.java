@@ -12,10 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/v1/posts")
@@ -68,20 +65,15 @@ public class ApiV1PostController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
+    public RsData<Void> modify(@PathVariable long id, @RequestBody @Valid ModifyReqBody body) {
 
         Post post = postService.getItem(id).get();
         postService.modify(post, body.title(), body.content());
-
-        return ResponseEntity
-                .noContent()
-                .build();
-
-//        return new RsData<>(
-//                "200-1",
-//                "%d번 글 수정이 완료되었습니다.".formatted(id),
-//                null
-//        );
+        return new RsData<>(
+                "200-1",
+                "%d번 글 수정이 완료되었습니다.".formatted(id),
+                null
+        );
     }
 
 
