@@ -52,17 +52,17 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(RuntimeException ex) {
+    @ExceptionHandler(ServiceException.class)
+    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(ServiceException ex) {
 
         // 개발 모드에서만 작동되도록.
         if(AppConfig.isNotProd()) ex.printStackTrace();
 
         return ResponseEntity
-                .status(HttpStatus.CONFLICT)
+                .status(ex.getStatusCode())
                 .body(
                         new RsData<>(
-                                "409-1",
+                                ex.getCode(),
                                 ex.getMessage()
                         )
                 );
