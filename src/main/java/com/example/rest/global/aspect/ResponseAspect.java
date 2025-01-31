@@ -1,6 +1,7 @@
 package com.example.rest.global.aspect;
 
 import com.example.rest.global.dto.RsData;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -39,11 +40,8 @@ public class ResponseAspect {
         Object rst = joinPoint.proceed(); // 실제 수행 메서드
 
         if(rst instanceof RsData rsData) {
-            String msg = rsData.getMsg();
-
-            // 응답 코드를 설정
-            response.setStatus(201);
-
+            int statusCode = rsData.getStatusCode();
+            response.setStatus(statusCode);
         }
 
         return rst;
