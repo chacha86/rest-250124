@@ -51,18 +51,18 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<RsData<Void>> DataIntegrityViolationExceptionHandle(DataIntegrityViolationException e) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(IllegalArgumentException ex) {
 
         // 개발 모드에서만 작동되도록.
-        if(AppConfig.isNotProd()) e.printStackTrace();
+        if(AppConfig.isNotProd()) ex.printStackTrace();
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
                 .body(
                         new RsData<>(
                                 "409-1",
-                                "이미 존재하는 데이터입니다."
+                                ex.getMessage()
                         )
                 );
     }
