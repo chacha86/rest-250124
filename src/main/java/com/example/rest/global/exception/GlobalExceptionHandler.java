@@ -51,8 +51,9 @@ public class GlobalExceptionHandler {
                 );
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(IllegalArgumentException ex) {
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<RsData<Void>> IllegalArgumentExceptionHandle(RuntimeException ex) {
 
         // 개발 모드에서만 작동되도록.
         if(AppConfig.isNotProd()) ex.printStackTrace();
@@ -66,4 +67,5 @@ public class GlobalExceptionHandler {
                         )
                 );
     }
+
 }
